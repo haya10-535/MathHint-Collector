@@ -1,0 +1,185 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>問題詳細</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/problem_detail.css' %}?v=20260204">
+</head>
+<body>
+  <div class="container">
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        {{ message }}{% if not forloop.last %}<br>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="header">
+      <h1>{{ problem.title }}</h1>
+      <a href="{% url 'problem_list' %}" class="btn btn-secondary">← 一覧に戻る</a>
+    </div>
+
+    {% if problem.image %}
+      <img class="problem-image" src="{{ problem.image.url }}" alt="問題の画像" />
+    {% endif %}
+
+    <div class="card">
+      <h2>📋 あなたの学習ヒント</h2>
+      <p class="meta">登録日：{{ problem.created_at|date:"Y-m-d H:i" }}</p>
+      
+      <div class="hint-grid">
+        <!-- 指針 -->
+        <div class="hint-box hint-box-approach">
+          <div class="hint-header">
+            <div class="hint-label hint-label-approach">
+              <span class="hint-label-main">
+                <span class="hint-icon">💡</span>
+                1️⃣ 指針
+              </span>
+              <span class="chart-badge">CHART</span>
+            </div>
+            <div class="hint-buttons">
+              <button class="reveal-btn btn-approach btn-main" onclick="revealHint(this)">
+                <span class="btn-icon">💡</span>
+                <span class="btn-text">指針を見る</span>
+              </button>
+              <button class="hide-btn btn-hide-approach btn-sub" onclick="hideHint(this)" style="display: none;">
+                <span class="btn-icon">🙈</span>
+                <span class="btn-text">隠す</span>
+              </button>
+            </div>
+          </div>
+          <div class="hint-content" style="display: none;">
+            {% if problem.hint_approach %}
+              {{ problem.hint_approach }}
+            {% else %}
+              <span class="hint-empty">まだ記録されていません</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- 検討 -->
+        <div class="hint-box hint-box-formula">
+          <div class="hint-header">
+            <div class="hint-label">2️⃣ 検討</div>
+            <div class="hint-buttons">
+              <button class="reveal-btn btn-formula btn-main" onclick="revealHint(this)">
+                <span class="btn-icon">📜</span>
+                <span class="btn-text">検討を見る</span>
+              </button>
+              <button class="hide-btn btn-hide-formula btn-sub" onclick="hideHint(this)" style="display: none;">
+                <span class="btn-icon">🙈</span>
+                <span class="btn-text">隠す</span>
+              </button>
+            </div>
+          </div>
+          <div class="hint-content" style="display: none;">
+            {% if problem.hint_formula %}
+              {{ problem.hint_formula }}
+            {% else %}
+              <span class="hint-empty">まだ記録されていません</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- 注意 -->
+        <div class="hint-box hint-box-technique">
+          <div class="hint-header">
+            <div class="hint-label">3️⃣ 注意</div>
+            <div class="hint-buttons">
+              <button class="reveal-btn btn-technique btn-main" onclick="revealHint(this)">
+                <span class="btn-icon">✨</span>
+                <span class="btn-text">注意を見る</span>
+              </button>
+              <button class="hide-btn btn-hide-technique btn-sub" onclick="hideHint(this)" style="display: none;">
+                <span class="btn-icon">🙈</span>
+                <span class="btn-text">隠す</span>
+              </button>
+            </div>
+          </div>
+          <div class="hint-content" style="display: none;">
+            {% if problem.hint_technique %}
+              {{ problem.hint_technique }}
+            {% else %}
+              <span class="hint-empty">まだ記録されていません</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 単元タグ -->
+    {% if problem.tags.all %}
+    <div class="card">
+      <h2>🏷️ 単元タグ</h2>
+      <div class="tags-list">
+        {% for tag in problem.tags.all %}
+          <a href="{% url 'tag_archive' tag.id %}" class="tag">{{ tag.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- アクション -->
+    <div class="action-buttons">
+      <a href="{% url 'problem_edit' problem.id %}" class="btn btn-primary">✏️ 編集する</a>
+      <a href="{% url 'problem_delete' problem.id %}" class="btn" style="background: #ef4444; color: white;">🗑️ 削除する</a>
+      <a href="{% url 'problem_list' %}" class="btn btn-secondary">← 一覧に戻る</a>
+    </div>
+  </div>
+
+  <script>
+    // MathJax initialization
+    if (window.MathJax) {
+      MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
+    }
+
+    // ヒント表示機能
+    function revealHint(button) {
+      const hintBox = button.closest('.hint-box');
+      const hintContent = hintBox.querySelector('.hint-content');
+      const hideBtn = hintBox.querySelector('.hide-btn');
+      
+      // 表示ボタンを非表示にする
+      button.style.display = 'none';
+      
+      // 隠すボタンを表示
+      hideBtn.style.display = 'inline-block';
+      
+      // コンテンツを表示（アニメーション付き）
+      hintContent.style.display = 'block';
+      hintContent.classList.remove('hide-animation');
+      hintContent.classList.add('reveal-animation');
+      
+      // MathJaxの再レンダリング
+      if (window.MathJax) {
+        MathJax.typesetPromise([hintContent]).catch(err => console.log('MathJax error:', err));
+      }
+    }
+
+    // ヒント非表示機能
+    function hideHint(button) {
+      const hintBox = button.closest('.hint-box');
+      const hintContent = hintBox.querySelector('.hint-content');
+      const revealBtn = hintBox.querySelector('.reveal-btn');
+      
+      // アニメーションを追加
+      hintContent.classList.remove('reveal-animation');
+      hintContent.classList.add('hide-animation');
+      
+      // アニメーション終了後に非表示
+      setTimeout(() => {
+        hintContent.style.display = 'none';
+        button.style.display = 'none';
+        revealBtn.style.display = 'inline-block';
+      }, 600);
+    }
+  </script>
+</body>
+</html>
+

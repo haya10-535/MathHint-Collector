@@ -1,0 +1,68 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ログイン - MathHint Collector</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/auth.css' %}">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="auth-logo">📝</div>
+      <h1>ログイン</h1>
+      <p>MathHint Collector に戻りました</p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">ユーザーネーム</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="error-message">
+            {{ form.username.errors }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">パスワード</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <div class="error-message">
+            {{ form.password.errors }}
+          </div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="submit-button">ログイン</button>
+    </form>
+
+    <div class="divider"><span>または</span></div>
+
+    <div class="auth-footer">
+      <p>アカウントを持っていない？ <a href="{% url 'signup' %}">新規登録</a></p>
+      <p><a href="{% url 'index' %}">ホームに戻る</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,554 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% if form.instance.pk %}問題を編集{% else %}新しい問題を登録{% endif %}</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/problem_form.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>{% if form.instance.pk %}問題を編集{% else %}新しい問題を登録{% endif %}</h1>
+
+    <form method="post" enctype="multipart/form-data" id="problemForm">
+      {% csrf_token %}
+
+      <!-- 学年・単元セクション（最上部） -->
+      <div class="form-section">
+        <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1f2937;">学年・単元</h2>
+
+        <div class="form-group">
+          <label for="id_grade">学年を選択 <span style="color: #ef4444;">*</span></label>
+          <select id="id_grade" name="grade" required>
+            <option value="">選択してください</option>
+            {% for grade in grades %}
+              <option value="{{ grade.id }}" {% if selected_grade and selected_grade.id == grade.id %}selected{% elif form.instance.grade and form.instance.grade.id == grade.id %}selected{% endif %}>{{ grade.name }}</option>
+            {% endfor %}
+          </select>
+          {% if form.grade.errors %}
+            <div class="error-message">{{ form.grade.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">先に学年を選ぶと、単元が表示されます</div>
+        </div>
+
+        <!-- 科目セクション（高校のみ）-->
+        <div class="form-group" id="subject-group" style="display: none;">
+          <label for="id_subject">科目を選択 <span style="color: #ef4444;">*</span></label>
+          <select id="id_subject" name="subject">
+            <option value="">選択してください</option>
+          </select>
+          {% if form.subject.errors %}
+            <div class="error-message">{{ form.subject.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">学年に応じた科目を選んでください</div>
+        </div>
+
+        <div class="form-group">
+          <label for="id_tags">単元を選択 <span style="color: #ef4444;">*</span></label>
+          <select id="id_tags" name="tags" multiple size="6" required {% if not selected_grade and not form.instance.grade %}disabled{% endif %}>
+            {% if tags_for_grade %}
+              {% for tag in tags_for_grade %}
+                <option value="{{ tag.id }}" {% if tag in form.instance.tags.all %}selected{% endif %}>{{ tag.name }}</option>
+              {% endfor %}
+            {% elif form.instance.grade %}
+              {% for tag in form.instance.grade.tags.all %}
+                <option value="{{ tag.id }}" {% if tag in form.instance.tags.all %}selected{% endif %}>{{ tag.name }}</option>
+              {% endfor %}
+            {% endif %}
+          </select>
+          {% if form.tags.errors %}
+            <div class="error-message">{{ form.tags.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">学年を選ぶと単元が表示されます（複数選択可）</div>
+        </div>
+
+        <input type="hidden" id="selected-tag-ids" value="{% for tag in form.instance.tags.all %}{{ tag.id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+      </div>
+
+      <!-- 基本情報セクション -->
+      <div class="form-section">
+        <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1f2937;">問題の入力方法</h2>
+        
+        <!-- 入力方法の選択 -->
+        <div class="input-method-tabs">
+          <input type="radio" id="method-keyboard" name="input-method" value="keyboard" checked>
+          <label for="method-keyboard">⌨️ キーボード入力</label>
+          
+          <input type="radio" id="method-handwriting" name="input-method" value="handwriting">
+          <label for="method-handwriting">✍️ 手書き入力</label>
+        </div>
+
+        <!-- キーボード入力セクション -->
+        <div id="keyboard-section" class="input-section active">
+          <div class="form-group">
+            <label for="id_title">問題の概要 <span style="color: #ef4444;">*</span></label>
+            {{ form.title }}
+            {% if form.title.errors %}
+              <div class="error-message">{{ form.title.errors.0 }}</div>
+            {% endif %}
+            <div class="form-help">問題が何についての問題か、簡潔に説明してください（例：「二次関数の最小値の問題」）</div>
+          </div>
+        </div>
+
+        <!-- 手書き入力セクション -->
+        <div id="handwriting-section" class="input-section">
+          <div class="form-help" style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
+            📝 下のキャンバスに手書きしてください。完成したら「完了」を押すと、その画像が問題画像として保存されます。
+          </div>
+          
+          <div class="canvas-toolbar">
+            <button type="button" id="btn-pen" class="tool-btn active" title="ペンで描画">✏️ ペン</button>
+            <button type="button" id="btn-eraser" class="tool-btn" title="消しゴム">🧹 消しゴム</button>
+            <button type="button" id="btn-clear" style="background: #fee2e2; border-color: #fca5a5; color: #dc2626;">🗑️ リセット</button>
+            
+            <div style="flex: 1;"></div>
+            
+            <span style="font-size: 13px; color: #6b7280;">ペンの太さ:</span>
+            <input type="range" id="brush-size" min="1" max="20" value="3" style="width: 80px;">
+            
+            <div class="color-picker" style="margin-left: 12px;">
+              <span style="font-size: 13px; color: #6b7280;">色:</span>
+              <div class="color-option active" data-color="#000000" style="background: #000000;"></div>
+              <div class="color-option" data-color="#ef4444" style="background: #ef4444;"></div>
+              <div class="color-option" data-color="#3b82f6" style="background: #3b82f6;"></div>
+              <div class="color-option" data-color="#10b981" style="background: #10b981;"></div>
+            </div>
+          </div>
+          
+          <div class="canvas-container">
+            <canvas id="drawingCanvas" width="600" height="400"></canvas>
+          </div>
+          
+          <button type="button" id="btn-done" style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%;">✅ 完了</button>
+        </div>
+
+        <!-- 画像フィールド（隠す） -->
+        <input type="hidden" id="id_image_data" name="image_data" value="">
+      </div>
+
+      <!-- 画像セクション（アップロード用） -->
+      <div class="form-section">
+        <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1f2937;">問題の画像（オプション）</h2>
+        
+        <div class="form-group">
+          <label for="id_image">カメラで撮った写真をアップロード</label>
+          {{ form.image }}
+          {% if form.image.errors %}
+            <div class="error-message">{{ form.image.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">
+            📱 スマホカメラで撮った問題の写真、またはファイルを選んでアップロード<br/>
+            📝 手書き入力を使う場合は、ここは空でも大丈夫です
+          </div>
+          <div id="image-preview-container" style="display: none; margin-top: 12px;">
+            <p style="margin: 8px 0; color: #6b7280; font-size: 13px;">保存された画像:</p>
+            <img id="image-preview" src="" alt="problem image" style="max-width: 100%; max-height: 300px; border-radius: 6px; border: 1px solid #d1d5db;" />
+          </div>
+          {% if form.instance.image %}
+            <div style="margin-top: 12px;">
+              <p style="margin: 8px 0; color: #6b7280; font-size: 13px;">現在の画像:</p>
+              <img src="{{ form.instance.image.url }}" alt="problem image" style="max-width: 100%; max-height: 200px; border-radius: 6px; border: 1px solid #d1d5db;" />
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Self-Output Learning Hints Section -->
+      <div class="form-section">
+        <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1f2937;">あなたの学習ヒント</h2>
+        <div class="hints-info">
+          💡 <strong>ここに3つのヒントを書く：</strong><br/>
+          記録したヒントを読み返すことで、指針・検討・注意をすぐ確認できるようにしましょう。
+        </div>
+
+        <!-- 指針 -->
+        <div class="form-group">
+          <label for="id_hint_approach">【指針】</label>
+          {{ form.hint_approach }}
+          {% if form.hint_approach.errors %}
+            <div class="error-message">{{ form.hint_approach.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">解法の方針や道すじを書く（例：「因数分解ができないか考えてみる」など）</div>
+        </div>
+
+        <!-- 検討 -->
+        <div class="form-group">
+          <label for="id_hint_formula">【検討】</label>
+          {{ form.hint_formula }}
+          {% if form.hint_formula.errors %}
+            <div class="error-message">{{ form.hint_formula.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">別解や理解を深める視点を書く（例：「解の公式を使う」）</div>
+        </div>
+
+        <!-- 注意 -->
+        <div class="form-group">
+          <label for="id_hint_technique">【注意点】</label>
+          {{ form.hint_technique }}
+          {% if form.hint_technique.errors %}
+            <div class="error-message">{{ form.hint_technique.errors.0 }}</div>
+          {% endif %}
+          <div class="form-help">ミスしやすい点や注意点を書く</div>
+        </div>
+      </div>
+
+      <!-- 非フィールドエラー -->
+      {% if form.non_field_errors %}
+        <div style="background: #fee2e2; border: 1px solid #fca5a5; color: #dc2626; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- ボタン -->
+      <div class="form-section" style="text-align: center; padding: 16px;">
+        <div class="buttons">
+          <input type="submit" value="{% if form.instance.pk %}更新{% else %}登録{% endif %}" />
+          <a class="button button-secondary" href="{% url 'problem_list' %}">キャンセル</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Canvas と描画機能
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const imageDataInput = document.getElementById('id_image_data');
+    const gradeSelect = document.getElementById('id_grade');
+    const subjectGroup = document.getElementById('subject-group');
+    const subjectSelect = document.getElementById('id_subject');
+    const tagsSelect = document.getElementById('id_tags');
+    const selectedTagIdsInput = document.getElementById('selected-tag-ids');
+    const tagsApiTemplate = "{% url 'tags_by_grade' 0 %}";
+    const subjectsApiTemplate = "{% url 'subjects_by_grade' 0 %}";
+    const tagsBySubjectApiTemplate = "{% url 'tags_by_subject' 0 %}";
+    
+    // 高校の学年ID（中学は 1-3, 高校は 4-6 と仮定）
+    const HIGH_SCHOOL_GRADES = [4, 5, 6]; // 高1, 高2, 高3のID
+    
+    // 入力方法の選択
+    const methodKeyboard = document.getElementById('method-keyboard');
+    const methodHandwriting = document.getElementById('method-handwriting');
+    const keyboardSection = document.getElementById('keyboard-section');
+    const handwritingSection = document.getElementById('handwriting-section');
+    
+    const titleInput = document.getElementById('id_title');
+    
+    // ツールボタン
+    const btnPen = document.getElementById('btn-pen');
+    const btnEraser = document.getElementById('btn-eraser');
+    const btnClear = document.getElementById('btn-clear');
+    const btnDone = document.getElementById('btn-done');
+    const brushSize = document.getElementById('brush-size');
+    const colorOptions = document.querySelectorAll('.color-option');
+
+    function getSelectedTagIds() {
+      if (!selectedTagIdsInput || !selectedTagIdsInput.value) return [];
+      return selectedTagIdsInput.value.split(',').filter(Boolean);
+    }
+
+    function setTagsOptions(tags) {
+      if (!tagsSelect) return;
+      const selectedIds = new Set(getSelectedTagIds());
+      tagsSelect.innerHTML = '';
+
+      tags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag.id;
+        option.textContent = tag.name;
+        if (selectedIds.has(String(tag.id))) {
+          option.selected = true;
+        }
+        tagsSelect.appendChild(option);
+      });
+
+      tagsSelect.disabled = tags.length === 0;
+    }
+
+    function setSubjectsOptions(subjects) {
+      if (!subjectSelect) return;
+      subjectSelect.innerHTML = '<option value="">選択してください</option>';
+
+      subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject.id;
+        option.textContent = subject.name;
+        subjectSelect.appendChild(option);
+      });
+
+      if (subjects.length > 0) {
+        subjectGroup.style.display = 'block';
+      } else {
+        subjectGroup.style.display = 'none';
+        subjectSelect.value = '';
+      }
+    }
+
+    async function fetchSubjectsForGrade(gradeId) {
+      if (!gradeId || !subjectSelect) {
+        setSubjectsOptions([]);
+        return;
+      }
+
+      const url = subjectsApiTemplate.replace('/0/', `/${gradeId}/`);
+      try {
+        const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) throw new Error('科目取得に失敗しました');
+        const data = await response.json();
+        setSubjectsOptions(data.subjects || []);
+      } catch (error) {
+        console.error(error);
+        setSubjectsOptions([]);
+      }
+    }
+
+    async function fetchTagsForGrade(gradeId) {
+      if (!gradeId || !tagsSelect) {
+        if (tagsSelect) {
+          tagsSelect.innerHTML = '';
+          tagsSelect.disabled = true;
+        }
+        return;
+      }
+
+      const url = tagsApiTemplate.replace('/0/', `/${gradeId}/`);
+      try {
+        const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) throw new Error('タグ取得に失敗しました');
+        const data = await response.json();
+        setTagsOptions(data.tags || []);
+      } catch (error) {
+        console.error(error);
+        tagsSelect.innerHTML = '';
+        tagsSelect.disabled = true;
+      }
+    }
+
+    async function fetchTagsForSubject(subjectId) {
+      if (!subjectId || !tagsSelect) {
+        if (tagsSelect) {
+          tagsSelect.innerHTML = '';
+          tagsSelect.disabled = true;
+        }
+        return;
+      }
+
+      const url = tagsBySubjectApiTemplate.replace('/0/', `/${subjectId}/`);
+      try {
+        const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) throw new Error('タグ取得に失敗しました');
+        const data = await response.json();
+        setTagsOptions(data.tags || []);
+      } catch (error) {
+        console.error(error);
+        tagsSelect.innerHTML = '';
+        tagsSelect.disabled = true;
+      }
+    }
+
+    if (gradeSelect) {
+      gradeSelect.addEventListener('change', () => {
+        if (selectedTagIdsInput) selectedTagIdsInput.value = '';
+        const gradeId = gradeSelect.value;
+        
+        // 高校の場合は科目を表示
+        if (gradeId && HIGH_SCHOOL_GRADES.includes(parseInt(gradeId))) {
+          fetchSubjectsForGrade(gradeId);
+        } else {
+          setSubjectsOptions([]);
+          fetchTagsForGrade(gradeId);
+        }
+      });
+
+      if (gradeSelect.value && tagsSelect && tagsSelect.options.length === 0) {
+        fetchTagsForGrade(gradeSelect.value);
+      }
+    }
+
+    if (subjectSelect) {
+      subjectSelect.addEventListener('change', () => {
+        if (selectedTagIdsInput) selectedTagIdsInput.value = '';
+        const subjectId = subjectSelect.value;
+        if (subjectId) {
+          fetchTagsForSubject(subjectId);
+        } else {
+          // 科目が未選択の場合は、学年全体のタグを表示
+          fetchTagsForGrade(gradeSelect.value);
+        }
+      });
+    }
+    
+    // 描画状態
+    let isDrawing = false;
+    let currentTool = 'pen'; // 'pen' or 'eraser'
+    let currentColor = '#000000';
+    let currentSize = 3;
+    
+    // Canvas のサイズをレスポンシブに調整
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const width = Math.min(600, rect.width);
+      canvas.width = width;
+      canvas.height = width * 2 / 3; // 3:2 アスペクト比
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 入力方法の切り替え
+    methodKeyboard.addEventListener('change', () => {
+      keyboardSection.classList.add('active');
+      handwritingSection.classList.remove('active');
+      titleInput.focus();
+    });
+    
+    methodHandwriting.addEventListener('change', () => {
+      keyboardSection.classList.remove('active');
+      handwritingSection.classList.add('active');
+      resizeCanvas();
+    });
+    
+    // ツール切り替え
+    btnPen.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentTool = 'pen';
+      btnPen.classList.add('active');
+      btnEraser.classList.remove('active');
+    });
+    
+    btnEraser.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentTool = 'eraser';
+      btnEraser.classList.add('active');
+      btnPen.classList.remove('active');
+    });
+    
+    // キャンバスリセット
+    btnClear.addEventListener('click', (e) => {
+      e.preventDefault();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+    
+    // ブラシサイズ
+    brushSize.addEventListener('change', (e) => {
+      currentSize = parseInt(e.target.value);
+    });
+    
+    // 色選択
+    colorOptions.forEach(option => {
+      option.addEventListener('click', (e) => {
+        colorOptions.forEach(o => o.classList.remove('active'));
+        option.classList.add('active');
+        currentColor = option.dataset.color;
+      });
+    });
+    
+    // マウスイベント
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    
+    // タッチイベント（モバイル対応）
+    canvas.addEventListener('touchstart', handleTouch);
+    canvas.addEventListener('touchmove', handleTouch);
+    canvas.addEventListener('touchend', stopDrawing);
+    
+    function startDrawing(e) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+    
+    function draw(e) {
+      if (!isDrawing) return;
+      
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      ctx.lineWidth = currentSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      if (currentTool === 'pen') {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+      } else if (currentTool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.strokeStyle = 'rgba(0,0,0,1)';
+      }
+      
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
+    
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.closePath();
+    }
+    
+    // タッチ対応
+    function handleTouch(e) {
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      canvas.dispatchEvent(mouseEvent);
+    }
+    
+    // 完了ボタン - Canvas を画像に変換
+    btnDone.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      canvas.toBlob(blob => {
+        // Blob を File に変換
+        const file = new File([blob], 'handwriting.png', { type: 'image/png' });
+        
+        // DataTransfer を使ってファイルを input に設定
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        document.getElementById('id_image').files = dataTransfer.files;
+        
+        // プレビューを表示
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const previewContainer = document.getElementById('image-preview-container');
+          const previewImg = document.getElementById('image-preview');
+          previewImg.src = event.target.result;
+          previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(blob);
+        
+        // ビジュアルフィードバック
+        alert('手書きを画像として保存しました！');
+        
+        // キーボード入力に戻す
+        methodKeyboard.checked = true;
+        keyboardSection.classList.add('active');
+        handwritingSection.classList.remove('active');
+      }, 'image/png');
+    });
+    
+    // フォーム送信時
+    document.getElementById('problemForm').addEventListener('submit', (e) => {
+      const inputMethod = document.querySelector('input[name="input-method"]:checked').value;
+      
+      if (inputMethod === 'keyboard' && !titleInput.value.trim()) {
+        e.preventDefault();
+        alert('キーボード入力を選択した場合、問題の概要を入力してください');
+        titleInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>
