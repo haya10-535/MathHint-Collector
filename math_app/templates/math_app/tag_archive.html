@@ -1,0 +1,80 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>単元別の問題</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/tag_archive.css' %}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>{{ tag.name }}</h1>
+      <a href="{% url 'problem_list' %}" class="btn btn-secondary">← 一覧に戻る</a>
+    </div>
+    
+    <div class="tag-badge">🏷️ この単元に{{ page_obj.paginator.count }}件の問題があります</div>
+    
+    {% if object_list %}
+      <div class="grid">
+        {% for problem in object_list %}
+          <div class="card">
+            {% if problem.image %}
+              <img src="{{ problem.image.url }}" alt="{{ problem.title }}" class="card-image" />
+            {% else %}
+              <div class="card-image-placeholder">📷</div>
+            {% endif %}
+            
+            <div class="card-content">
+              <h3 class="card-title">{{ problem.title }}</h3>
+              <div class="card-meta">Registered: {{ problem.created_at|date:"Y-m-d" }}</div>
+              
+              {% if problem.tags.all %}
+                <div class="card-tags">
+                  {% for t in problem.tags.all %}
+                    <span class="tag">{{ t.name }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              
+              <div class="card-buttons">
+                <a href="{% url 'problem_detail' problem.id %}" class="card-btn">詳細</a>
+                <a href="{% url 'problem_edit' problem.id %}" class="card-btn">編集</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <!-- ページネーション -->
+      {% if is_paginated %}
+        <div style="text-align: center; margin-top: 32px; color: white;">
+          <div style="margin-bottom: 16px;">
+            第{{ page_obj.number }}ページ / 全{{ page_obj.paginator.num_pages }}ページ
+          </div>
+          <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+            {% if page_obj.has_previous %}
+              <a href="?page=1" class="btn btn-secondary">最初</a>
+              <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary">← 前へ</a>
+            {% endif %}
+            
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary">次へ →</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-secondary">最後</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h2>まだ癫箇されていません</h2>
+        <p>「{{ tag.name }}」という単元で記録した問題がありません。</p>
+        <a href="{% url 'problem_list' %}" class="btn btn-secondary">← 一覧に戻る</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

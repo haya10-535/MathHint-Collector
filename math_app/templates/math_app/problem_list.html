@@ -1,0 +1,130 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>問題一覧 - MathHint Collector</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/problem_list.css' %}">
+  </head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="{% url 'index' %}" class="logo">
+        <div class="logo-icon">📝</div>
+        <span>MathHint</span>
+      </a>
+      <div class="header-actions">
+        <span class="user-info">{{ user.username }} さん</span>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeUN3t6iWLeQ250vXUhn-QH4shU-uVnAm4EEeo-m-yhRo252Q/viewform?usp=header" class="help-link" target="_blank" rel="noopener noreferrer">質問はこちら</a>
+        <a href="{% url 'problem_new' %}" class="btn btn-primary">+ 問題登録</a>
+        <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>📚 あなたの問題一覧</h1>
+      <span style="color: #6b7280; font-size: 14px;">{{ problems.paginator.count }} 件</span>
+    </div>
+
+    <!-- フィルタ・検索 -->
+    <div class="filters">
+      <form method="get" class="filters-content">
+        <div class="form-group">
+          <label>キーワード検索</label>
+          <input
+            type="text"
+            name="q"
+            placeholder="タイトやヒントを検索"
+            value="{{ search_query|default:'' }}"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>単元でフィルタ</label>
+          <select name="tag">
+            <option value="">すべての単元</option>
+            {% for tag in tags %}
+              <option value="{{ tag.id }}" {% if selected_tag == tag.id|stringformat:"s" %}selected{% endif %}>
+                {{ tag.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit">検索</button>
+      </form>
+    </div>
+
+    <!-- Problems Grid -->
+    {% if problems %}
+      <div class="grid">
+        {% for problem in problems %}
+          <div class="card">
+            <div class="card-image">
+              {% if problem.image %}
+                <img src="{{ problem.image.url }}" alt="{{ problem.title }}" />
+              {% else %}
+                📷
+              {% endif %}
+            </div>
+
+            <div class="card-body">
+              <div class="card-title">
+                <a href="{% url 'problem_detail' problem.pk %}">{{ problem.title }}</a>
+              </div>
+
+              <div class="card-meta">
+                {% for tag in problem.tags.all %}
+                  <a href="?tag={{ tag.id }}" class="tag-filter">{{ tag.name }}</a>
+                {% empty %}
+                  <span class="tag" style="color: #9ca3af;">タグなし</span>
+                {% endfor %}
+              </div>
+
+              <div class="card-date">
+                登録: {{ problem.created_at|date:"Y/m/d H:i" }}
+              </div>
+
+              <div class="card-actions">
+                <a href="{% url 'problem_detail' problem.pk %}" class="btn-view">詳細</a>
+                <a href="{% url 'problem_edit' problem.pk %}" class="btn-edit">編集</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- ページネーション -->
+      {% if is_paginated %}
+        <div class="pagination">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">最初</a>
+            <a href="?page={{ page_obj.previous_page_number }}">← 前へ</a>
+          {% endif %}
+
+          <span style="padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: #f3f4f6;">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+          </span>
+
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">次へ →</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% else %}
+      <!-- 空状況 -->
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h2>問題がまだ登録されていません</h2>
+        <p>最初の問題を登録して、自分で考える学習を始めましょう！</p>
+        <a href="{% url 'problem_new' %}" class="btn btn-primary">+問題登録</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

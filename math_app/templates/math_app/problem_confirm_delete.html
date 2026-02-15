@@ -1,0 +1,32 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>問題を削除する</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/problem_confirm_delete.css' %}">
+</head>
+<body>
+  <div class="dialog">
+    <div class="icon">⚠️</div>
+    <h1>本当に削除しますか？</h1>
+    <p>この問題を削除すると、記録したすべてのヒント情報がなくなります。</p>
+    
+    <div class="problem-title">
+      {{ object.title }}
+    </div>
+    
+    <div class="warning">
+      <strong>⚠️ この操作は戻せません。</strong> 削除したあとでは、このヒント情報を復元することができません。
+    </div>
+    
+    <form method="post" class="button-group">
+      {% csrf_token %}
+      <a href="{% url 'problem_detail' object.id %}" class="btn btn-cancel">キャンセル</a>
+      <button type="submit" class="btn btn-delete">はい、削除する</button>
+    </form>
+  </div>
+</body>
+</html>

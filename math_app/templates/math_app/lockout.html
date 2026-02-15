@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アカウントロック - MathHint Collector</title>
+    <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+    <style>
+        .lockout-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .lockout-icon {
+            font-size: 48px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .lockout-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .lockout-message {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .lockout-timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #dc3545;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .lockout-info {
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .lockout-container {
+                margin: 30px 15px;
+                padding: 20px;
+            }
+
+            .lockout-title {
+                font-size: 20px;
+            }
+
+            .lockout-message {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lockout-container {
+                margin: 20px 10px;
+                padding: 15px;
+            }
+
+            .lockout-icon {
+                font-size: 36px;
+            }
+
+            .lockout-title {
+                font-size: 16px;
+            }
+
+            .lockout-message {
+                font-size: 12px;
+            }
+
+            .lockout-timer {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    
+    <div class="lockout-container">
+        <div class="lockout-icon">🔒</div>
+        <div class="lockout-title">アカウントがロックされています</div>
+        
+        <div class="lockout-message">
+            複数回のログイン失敗が検出されました。<br>
+            セキュリティ保護のため、アカウントは一時的にロックされています。
+        </div>
+
+        <div class="lockout-timer">
+            ⏱️ しばらくしてからもう一度お試しください
+        </div>
+
+        <div class="lockout-info">
+            <p>
+                ✓ このロックは自動的に解除されます<br>
+                ✓ アカウントに問題はありません<br>
+                ✓ 時間をおいてログインをお試しください
+            </p>
+        </div>
+
+        <a href="{% url 'index' %}" class="back-link">
+            トップページに戻る
+        </a>
+    </div>
+
+    <script>
+        // ロック情報を表示（オプション）
+        console.log('Account temporarily locked due to multiple failed login attempts.');
+    </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+/* ============================================
+   問題フォームページ (problem_form.html) 専用CSS
+   ============================================ */
+
+body {
+  background: #f9fafb;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.form-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.field-set {
+  background: #f3f4f6;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.field-set h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.hints-info {
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #1e40af;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+button,
+input[type="submit"],
+a.button {
+  background: #2563eb;
+  color: #fff;
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background: #1d4ed8;
+}
+
+.button-secondary {
+  background: #6b7280;
+}
+
+.button-secondary:hover {
+  background: #4b5563;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #1f2937;
+}
+
+/* ============================================
+   手書き入力機能専用CSS
+   ============================================ */
+
+.input-method-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.input-method-tabs label {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.input-method-tabs input[type="radio"] {
+  display: none;
+}
+
+.input-method-tabs input[type="radio"]:checked + label {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.input-section {
+  display: none;
+}
+
+.input-section.active {
+  display: block;
+}
+
+#drawingCanvas {
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: crosshair;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.canvas-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.canvas-toolbar button {
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.canvas-toolbar button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.canvas-toolbar button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.color-picker {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.color-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 2px solid #d1d5db;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.color-option.active {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #3b82f6;
+}
+
+.canvas-container {
+  margin: 16px 0;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 0 12px;
+  }
+
+  .form-section {
+    padding: 20px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+  }
+
+  .form-section h2 {
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+
+  .field-set {
+    padding: 14px;
+    margin-bottom: 14px;
+    border-radius: 5px;
+  }
+
+  .field-set h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .hints-info {
+    padding: 10px;
+    font-size: 12px;
+    border-left: 3px solid #3b82f6;
+  }
+
+  .buttons {
+    gap: 6px;
+  }
+
+  button,
+  input[type="submit"],
+  a.button {
+    padding: 10px 20px;
+    font-size: 13px;
+    border-radius: 5px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .input-method-tabs {
+    gap: 10px;
+  }
+
+  .input-method-tabs label {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .canvas-toolbar {
+    gap: 6px;
+  }
+
+  .canvas-toolbar button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  #drawingCanvas {
+    border-width: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 0;
+  }
+
+  .container {
+    max-width: 100%;
+    margin: 12px auto;
+    padding: 0 12px;
+  }
+
+  h1 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .form-section {
+    padding: 16px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-section h2 {
+    font-size: 14px;
+    margin-bottom: 12px;
+    margin-top: 0;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="password"],
+  .form-group input[type="email"],
+  .form-group textarea,
+  .form-group select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+
+  .form-group textarea {
+    min-height: 80px;
+  }
+
+  .field-set {
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #f9fafb;
+    border-radius: 4px;
+  }
+
+  .field-set h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+
+  .hints-info {
+    padding: 8px 10px;
+    font-size: 11px;
+    border-left: 3px solid #3b82f6;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  button,
+  input[type="submit"],
+  a.button {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .input-method-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .input-method-tabs label {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 8px;
+    font-size: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+
+  .input-method-tabs input[type="radio"]:checked + label {
+    background: #eff6ff;
+    border-color: #3b82f6;
+  }
+
+  .canvas-toolbar {
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .canvas-toolbar button {
+    padding: 6px 10px;
+    font-size: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 3px;
+  }
+
+  .canvas-toolbar button.active {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .color-picker {
+    gap: 4px;
+  }
+
+  .color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    border-width: 1px;
+  }
+
+  .color-option.active {
+    box-shadow: 0 0 0 1px white, 0 0 0 3px #3b82f6;
+  }
+
+  #drawingCanvas {
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+
+  .canvas-container {
+    margin: 12px 0;
+  }
+}
+
+/* 画像アップロード フィールド */
+input[type="file"] {
+  display: block;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+input[type="file"]:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+input[type="file"]::file-selector-button {
+  padding: 6px 12px;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #d1d5db;
+}
+
+/* 画像プレビュー */
+img[src*="hints"] {
+  display: block;
+  margin-top: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+

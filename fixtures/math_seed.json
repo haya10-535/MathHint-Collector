@@ -1,0 +1,578 @@
+﻿[
+{
+  "model": "math_app.grade",
+  "pk": 1,
+  "fields": {
+    "code": "junior1",
+    "name": "中学1年",
+    "order": 1
+  }
+},
+{
+  "model": "math_app.grade",
+  "pk": 2,
+  "fields": {
+    "code": "junior2",
+    "name": "中学2年",
+    "order": 2
+  }
+},
+{
+  "model": "math_app.grade",
+  "pk": 3,
+  "fields": {
+    "code": "junior3",
+    "name": "中学3年",
+    "order": 3
+  }
+},
+{
+  "model": "math_app.grade",
+  "pk": 4,
+  "fields": {
+    "code": "high1",
+    "name": "高校1年",
+    "order": 4
+  }
+},
+{
+  "model": "math_app.grade",
+  "pk": 5,
+  "fields": {
+    "code": "high2",
+    "name": "高校2年",
+    "order": 5
+  }
+},
+{
+  "model": "math_app.grade",
+  "pk": 6,
+  "fields": {
+    "code": "high3",
+    "name": "高校3年",
+    "order": 6
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 1,
+  "fields": {
+    "name": "数学Ⅰ",
+    "grade": 4,
+    "order": 0,
+    "created_at": "2026-02-04T03:29:14.134Z"
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 2,
+  "fields": {
+    "name": "数学Ａ",
+    "grade": 4,
+    "order": 1,
+    "created_at": "2026-02-04T03:29:27.685Z"
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 3,
+  "fields": {
+    "name": "数学Ⅱ",
+    "grade": 5,
+    "order": 0,
+    "created_at": "2026-02-04T03:29:41.083Z"
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 4,
+  "fields": {
+    "name": "数学Ｂ",
+    "grade": 5,
+    "order": 1,
+    "created_at": "2026-02-04T03:29:55.871Z"
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 5,
+  "fields": {
+    "name": "数学Ⅲ",
+    "grade": 6,
+    "order": 0,
+    "created_at": "2026-02-04T03:30:16.366Z"
+  }
+},
+{
+  "model": "math_app.subject",
+  "pk": 6,
+  "fields": {
+    "name": "数学Ｃ",
+    "grade": 6,
+    "order": 1,
+    "created_at": "2026-02-04T03:30:29.685Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 1,
+  "fields": {
+    "name": "正負の数",
+    "grade": 1,
+    "subject": null,
+    "order": 0,
+    "created_at": "2026-02-04T02:41:49.359Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 2,
+  "fields": {
+    "name": "文字と式",
+    "grade": 1,
+    "subject": null,
+    "order": 1,
+    "created_at": "2026-02-04T02:42:04.970Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 3,
+  "fields": {
+    "name": "方程式",
+    "grade": 1,
+    "subject": null,
+    "order": 2,
+    "created_at": "2026-02-04T02:42:11.864Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 4,
+  "fields": {
+    "name": "比例・反比例",
+    "grade": 1,
+    "subject": null,
+    "order": 3,
+    "created_at": "2026-02-04T02:42:21.435Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 5,
+  "fields": {
+    "name": "平面図形",
+    "grade": 1,
+    "subject": null,
+    "order": 4,
+    "created_at": "2026-02-04T02:42:41.588Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 6,
+  "fields": {
+    "name": "空間図形",
+    "grade": 1,
+    "subject": null,
+    "order": 5,
+    "created_at": "2026-02-04T02:42:48.624Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 7,
+  "fields": {
+    "name": "資料の分析と活用",
+    "grade": 1,
+    "subject": null,
+    "order": 6,
+    "created_at": "2026-02-04T02:42:58.294Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 8,
+  "fields": {
+    "name": "式の計算",
+    "grade": 2,
+    "subject": null,
+    "order": 0,
+    "created_at": "2026-02-04T02:43:07.279Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 9,
+  "fields": {
+    "name": "連立方程式",
+    "grade": 2,
+    "subject": null,
+    "order": 1,
+    "created_at": "2026-02-04T02:43:23.874Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 10,
+  "fields": {
+    "name": "1次関数",
+    "grade": 2,
+    "subject": null,
+    "order": 2,
+    "created_at": "2026-02-04T02:43:31.675Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 11,
+  "fields": {
+    "name": "平行と合同",
+    "grade": 2,
+    "subject": null,
+    "order": 3,
+    "created_at": "2026-02-04T02:43:40.411Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 12,
+  "fields": {
+    "name": "三角形と四角形",
+    "grade": 2,
+    "subject": null,
+    "order": 4,
+    "created_at": "2026-02-04T02:43:50.811Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 13,
+  "fields": {
+    "name": "確率",
+    "grade": 2,
+    "subject": null,
+    "order": 5,
+    "created_at": "2026-02-04T02:43:59.500Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 14,
+  "fields": {
+    "name": "多項式",
+    "grade": 3,
+    "subject": null,
+    "order": 0,
+    "created_at": "2026-02-04T02:44:08.818Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 15,
+  "fields": {
+    "name": "平方根",
+    "grade": 3,
+    "subject": null,
+    "order": 1,
+    "created_at": "2026-02-04T02:44:14.495Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 16,
+  "fields": {
+    "name": "2次方程式",
+    "grade": 3,
+    "subject": null,
+    "order": 2,
+    "created_at": "2026-02-04T03:10:56.642Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 17,
+  "fields": {
+    "name": "二次関数",
+    "grade": 3,
+    "subject": null,
+    "order": 3,
+    "created_at": "2026-02-04T03:11:29.465Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 18,
+  "fields": {
+    "name": "相似な図形",
+    "grade": 3,
+    "subject": null,
+    "order": 4,
+    "created_at": "2026-02-04T03:11:42.084Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 19,
+  "fields": {
+    "name": "円",
+    "grade": 3,
+    "subject": null,
+    "order": 5,
+    "created_at": "2026-02-04T03:11:51.354Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 20,
+  "fields": {
+    "name": "三平方の定理",
+    "grade": 3,
+    "subject": null,
+    "order": 6,
+    "created_at": "2026-02-04T03:12:05.620Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 21,
+  "fields": {
+    "name": "標本調査",
+    "grade": 3,
+    "subject": null,
+    "order": 7,
+    "created_at": "2026-02-04T03:12:17.487Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 22,
+  "fields": {
+    "name": "数と式",
+    "grade": 4,
+    "subject": 1,
+    "order": 0,
+    "created_at": "2026-02-04T03:31:08.735Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 23,
+  "fields": {
+    "name": "図形と計量",
+    "grade": 4,
+    "subject": 1,
+    "order": 1,
+    "created_at": "2026-02-04T03:31:30.974Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 24,
+  "fields": {
+    "name": "二次関数",
+    "grade": 4,
+    "subject": 1,
+    "order": 2,
+    "created_at": "2026-02-04T03:31:43.394Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 25,
+  "fields": {
+    "name": "データの分析",
+    "grade": 4,
+    "subject": 1,
+    "order": 3,
+    "created_at": "2026-02-04T03:31:58.750Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 26,
+  "fields": {
+    "name": "図形の性質",
+    "grade": 4,
+    "subject": 2,
+    "order": 0,
+    "created_at": "2026-02-04T03:32:12.607Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 27,
+  "fields": {
+    "name": "場合の数と確率",
+    "grade": 4,
+    "subject": 2,
+    "order": 1,
+    "created_at": "2026-02-04T04:12:22.225Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 28,
+  "fields": {
+    "name": "数学と人間の活動",
+    "grade": 4,
+    "subject": 2,
+    "order": 2,
+    "created_at": "2026-02-04T04:20:05.713Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 29,
+  "fields": {
+    "name": "いろいろな式",
+    "grade": 5,
+    "subject": 3,
+    "order": 0,
+    "created_at": "2026-02-04T04:20:27.329Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 30,
+  "fields": {
+    "name": "図形と方程式",
+    "grade": 5,
+    "subject": 3,
+    "order": 1,
+    "created_at": "2026-02-04T04:20:50.272Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 31,
+  "fields": {
+    "name": "指数関数・対数関数",
+    "grade": 5,
+    "subject": 3,
+    "order": 2,
+    "created_at": "2026-02-04T04:22:06.106Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 32,
+  "fields": {
+    "name": "三角関数",
+    "grade": 5,
+    "subject": 3,
+    "order": 3,
+    "created_at": "2026-02-04T04:22:29.883Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 33,
+  "fields": {
+    "name": "微分・積分",
+    "grade": 5,
+    "subject": 3,
+    "order": 4,
+    "created_at": "2026-02-04T04:22:49.674Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 34,
+  "fields": {
+    "name": "数列",
+    "grade": 5,
+    "subject": 4,
+    "order": 0,
+    "created_at": "2026-02-04T04:23:04.368Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 35,
+  "fields": {
+    "name": "統計的な推測",
+    "grade": 5,
+    "subject": 4,
+    "order": 1,
+    "created_at": "2026-02-04T04:23:30.614Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 36,
+  "fields": {
+    "name": "数学と社会生活",
+    "grade": 5,
+    "subject": 4,
+    "order": 2,
+    "created_at": "2026-02-04T04:40:16.992Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 37,
+  "fields": {
+    "name": "極限",
+    "grade": 6,
+    "subject": 5,
+    "order": 0,
+    "created_at": "2026-02-04T04:40:30.992Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 38,
+  "fields": {
+    "name": "微分法",
+    "grade": 6,
+    "subject": 5,
+    "order": 1,
+    "created_at": "2026-02-04T04:41:31.068Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 39,
+  "fields": {
+    "name": "積分法",
+    "grade": 6,
+    "subject": 5,
+    "order": 2,
+    "created_at": "2026-02-04T04:41:46.623Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 40,
+  "fields": {
+    "name": "ベクトル",
+    "grade": 6,
+    "subject": 6,
+    "order": 0,
+    "created_at": "2026-02-04T04:41:58.432Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 41,
+  "fields": {
+    "name": "平面上の曲線と複素数平面",
+    "grade": 6,
+    "subject": 6,
+    "order": 1,
+    "created_at": "2026-02-04T04:42:20.245Z"
+  }
+},
+{
+  "model": "math_app.tag",
+  "pk": 43,
+  "fields": {
+    "name": "数学的な表現の工夫",
+    "grade": 6,
+    "subject": 6,
+    "order": 2,
+    "created_at": "2026-02-04T04:43:49.936Z"
+  }
+}
+]

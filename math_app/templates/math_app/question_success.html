@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>送信完了 - MathHint Collector</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/auth.css' %}">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="auth-logo" style="font-size: 64px;">✅</div>
+      <h1>送信完了</h1>
+      <p>質問を受け付けました</p>
+    </div>
+
+    <div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+      <p style="margin: 0; color: #065f46; font-size: 16px; line-height: 1.6;">
+        <strong>✉️ 質問を送信しました！</strong><br>
+        できるだけ早く返信いたしますので、しばらくお待ちください。
+      </p>
+    </div>
+
+    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+      <h2 style="margin-top: 0; font-size: 18px; color: #1f2937;">📧 返信について</h2>
+      <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.8;">
+        <li>返信は <strong>0322hyt@gmail.com</strong> から送信されます</li>
+        <li>迷惑メールフォルダもご確認ください</li>
+        <li>受信設定で上記アドレスを許可してください</li>
+        <li>24〜48時間以内に返信を心がけています</li>
+      </ul>
+    </div>
+
+    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+      <p style="margin: 0; color: #92400e; font-size: 14px;">
+        ⚠️ <strong>返信が届かない場合</strong><br>
+        数日経っても返信がない場合は、お手数ですが直接 <strong>0322hyt@gmail.com</strong> までご連絡ください。
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 32px;">
+      <a href="{% url 'index' %}" class="btn btn-primary" style="margin-bottom: 12px; display: inline-block;">トップページに戻る</a>
+      {% if user.is_authenticated %}
+        <br>
+        <a href="{% url 'problem_list' %}" class="btn btn-secondary" style="display: inline-block;">問題一覧を見る</a>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

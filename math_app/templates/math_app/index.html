@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathHint Collector</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/index.css' %}">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="{% url 'index' %}" class="logo">
+        <div class="logo-icon">📝</div>
+        <span>MathHint Collector</span>
+      </a>
+      <div class="nav-buttons">
+        {% if user.is_authenticated %}
+          <a href="{% url 'problem_list' %}" class="btn btn-primary">ダッシュボード</a>
+          <a href="{% url 'logout' %}" class="btn btn-secondary">ログアウト</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-secondary">ログイン</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">新規登録</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>MathHint-Collector</h1>
+      <p class="subtitle">解放の引き出しを多くしよう。合格に直結するアプリ"MathHint-Collector"</p>
+
+      <div class="concept-box">
+        <h2>📚 セルフ・アウトプット型学習</h2>
+        <p>解説を見る前に。生成AIに頼る前に。<br>自分の言葉で「指針」「別解の検討」「注意点」を記録しておきましょう。基礎固めに最適なアプリです！！</p>
+      </div>
+
+      <section class="pillars" aria-label="三種の神器">
+        <h2>三種の神器</h2>
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon">💡</div>
+            <h3>指針</h3>
+            <p>解法の切り口を自分の言葉で言語化する。</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">🔍</div>
+            <h3>別解の検討</h3>
+            <p>別解や深い理解を記録し、応用力を鍛える。</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">⚠️</div>
+            <h3>注意点</h3>
+            <p>同じミスは二度と繰り返さないように。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="question-card" aria-label="数学質問・相談窓口">
+        <div class="question-card-header">
+          <h2>🎓 開発者への質問相談窓口</h2>
+          <p>・この問題の方針が全然つかめない...<br>
+            ・もっと良い解法を知りたい...<br>
+            そんな時は私に直接質問してください！必ずやご期待にお応えいたします👍
+          </p>
+        </div>
+        <a class="question-card-button" href="{% url 'question' %}">
+          質問フォームへ
+        </a>
+        <p class="question-card-note">返信用アドレス: 0322hyt@gmail.com / 受信許可の設定をお願いします。</p>
+      </section>
+
+      <div class="cta-section">
+        {% if user.is_authenticated %}
+          <p style="margin-bottom: 24px; font-size: 16px;">さあ、学習を始めましょう！</p>
+          <div class="cta-buttons">
+            <a href="{% url 'problem_new' %}" class="btn btn-primary">新しい問題を登録</a>
+            <a href="{% url 'problem_list' %}" class="btn btn-secondary">問題一覧を見る</a>
+          </div>
+        {% else %}
+          <p style="margin-bottom: 24px; font-size: 16px;">今から自分の言葉で学習を記録しよう</p>
+          <div class="cta-buttons">
+            <a href="{% url 'signup' %}" class="btn btn-primary">新規登録</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">ログイン</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MathHint Collector - 自分の言葉で学ぶ学習管理アプリ</p>
+  </footer>
+</body>
+</html>

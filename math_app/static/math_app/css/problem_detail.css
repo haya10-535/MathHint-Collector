@@ -1,0 +1,553 @@
+/* ============================================
+   問題詳細ページ (problem_detail.html) 専用CSS
+   ============================================ */
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 24px 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 28px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.meta {
+  color: #e5e7eb;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.problem-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.card h2 {
+  font-size: 18px;
+  color: #111827;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hint-box {
+  border-left: 4px solid #3b82f6;
+  background: #f0f9ff;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.hint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  grid-template-areas:
+    "approach approach"
+    "formula technique";
+}
+
+.hint-box-approach {
+  grid-area: approach;
+}
+
+.hint-box-formula {
+  grid-area: formula;
+}
+
+.hint-box-technique {
+  grid-area: technique;
+}
+
+.hint-box-approach {
+  border-left-color: #1d4ed8;
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  box-shadow: 0 12px 24px rgba(30, 64, 175, 0.18);
+  padding: 16px;
+}
+
+.hint-label-approach {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e3a8a;
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+.hint-label-approach .hint-label-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hint-icon {
+  font-size: 16px;
+}
+
+.chart-badge {
+  background: #1d4ed8;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 4px 8px;
+  border-radius: 999px;
+  box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+}
+
+.hint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.hint-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e40af;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  padding: 6px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.hint-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.reveal-btn,
+.hide-btn {
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 -2px 8px rgba(255, 255, 255, 0.35);
+}
+
+.btn-main {
+  padding: 12px 26px;
+  min-height: 46px;
+}
+
+.btn-sub {
+  padding: 8px 14px;
+  min-height: 36px;
+  font-size: 12px;
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+}
+
+.btn-text {
+  letter-spacing: 0.02em;
+}
+
+.reveal-btn:hover,
+.hide-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  filter: saturate(1.05);
+}
+
+.reveal-btn:active,
+.hide-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* 方針ボタン - 薄い青 */
+.btn-approach {
+  background: linear-gradient(135deg, #c7e3ff 0%, #9fc5ff 100%);
+  color: #1e3a8a;
+  box-shadow: 0 10px 20px rgba(159, 197, 255, 0.45),
+              0 2px 8px rgba(59, 130, 246, 0.25),
+              inset 0 -2px 10px rgba(59, 130, 246, 0.2);
+}
+
+.btn-approach:hover {
+  background: linear-gradient(135deg, #d8edff 0%, #c7e3ff 100%);
+}
+
+.hint-box-formula {
+  border-left-color: #f59e0b;
+  background: #fff7ed;
+}
+
+.hint-box-formula .hint-label {
+  color: #9a3412;
+  background: #ffedd5;
+  border-color: #fed7aa;
+}
+
+/* 公式ボタン - オレンジ */
+.btn-formula {
+  background: linear-gradient(135deg, #ffd9b3 0%, #ffc28c 100%);
+  color: #7c2d12;
+  box-shadow: 0 10px 20px rgba(255, 194, 140, 0.45),
+              0 2px 8px rgba(249, 115, 22, 0.25),
+              inset 0 -2px 10px rgba(249, 115, 22, 0.2);
+}
+
+.btn-formula:hover {
+  background: linear-gradient(135deg, #ffe6cc 0%, #ffd9b3 100%);
+}
+
+/* コツボタン - 薄い緑 */
+.btn-technique {
+  background: linear-gradient(135deg, #c9f7d6 0%, #9feab8 100%);
+  color: #14532d;
+  box-shadow: 0 10px 20px rgba(159, 234, 184, 0.45),
+              0 2px 8px rgba(34, 197, 94, 0.25),
+              inset 0 -2px 10px rgba(34, 197, 94, 0.2);
+}
+
+.btn-technique:hover {
+  background: linear-gradient(135deg, #dcfce7 0%, #c9f7d6 100%);
+}
+
+.hint-box-technique {
+  border-left-color: #ef4444;
+  background: #fff1f2;
+}
+
+.hint-box-technique .hint-label {
+  color: #9f1239;
+  background: #ffe4e6;
+  border-color: #fecdd3;
+}
+
+/* 隠すボタン（共通） */
+.hide-btn {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #4b5563;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),
+              0 2px 8px rgba(0, 0, 0, 0.08),
+              inset 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.hint-content {
+  color: #1f2937;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.reveal-animation {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hide-animation {
+  animation: fadeOutDown 0.6s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+}
+
+.hint-empty {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.messages {
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  color: #047857;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .header {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .hint-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "approach"
+      "formula"
+      "technique";
+    gap: 12px;
+  }
+
+  .hint-box-approach,
+  .hint-box-formula,
+  .hint-box-technique {
+    padding: 14px;
+  }
+
+  .btn-main {
+    padding: 10px 20px;
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .btn-sub {
+    padding: 6px 12px;
+    min-height: 32px;
+    font-size: 11px;
+  }
+
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .reveal-btn,
+  .hide-btn {
+    gap: 6px;
+  }
+
+  .tags-list {
+    gap: 6px;
+  }
+
+  .action-buttons {
+    gap: 6px;
+  }
+
+  .problem-image {
+    max-height: 300px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 16px 0;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 18px;
+    min-width: auto;
+  }
+
+  .meta {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+  }
+
+  .card h2 {
+    font-size: 15px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+
+  .hint-box {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left-width: 3px;
+    border-radius: 3px;
+  }
+
+  .hint-grid {
+    gap: 10px;
+  }
+
+  .hint-box-approach,
+  .hint-box-formula,
+  .hint-box-technique {
+    padding: 12px;
+  }
+
+  .hint-label {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .hint-label-approach {
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .hint-icon {
+    font-size: 14px;
+  }
+
+  .chart-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    letter-spacing: 0.06em;
+  }
+
+  .btn-main {
+    padding: 8px 16px;
+    min-height: 36px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .btn-sub {
+    padding: 5px 10px;
+    min-height: 28px;
+    font-size: 10px;
+  }
+
+  .btn-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .reveal-btn,
+  .hide-btn {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    gap: 4px;
+    font-size: 12px;
+  }
+
+  .hint-content {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .tags-list {
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .action-buttons {
+    gap: 4px;
+    margin-top: 12px;
+    flex-direction: column;
+  }
+
+  .action-buttons button,
+  .action-buttons a {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .problem-image {
+    max-height: 240px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .messages {
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+}

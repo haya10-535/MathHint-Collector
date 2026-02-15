@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>質問フォーム - MathHint Collector</title>
+  <link rel="stylesheet" href="{% static 'math_app/css/common.css' %}">
+  <link rel="stylesheet" href="{% static 'math_app/css/auth.css' %}">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="auth-logo">🎓</div>
+      <h1>開発者への質問</h1>
+      <p>数学の問題で困ったことがあれば、気軽に質問してください</p>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>こんな質問を受け付けています：</strong><br>
+      ・この問題の方針が全然つかめない<br>
+      ・もっと良い解法を知りたい<br>
+      ・解答の理解が難しい
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="error-message">
+            {{ form.name.errors }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="error-message">
+            {{ form.email.errors }}
+          </div>
+        {% endif %}
+        <div class="form-help">返信用のメールアドレスです。受信許可設定をお願いします。</div>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+        {{ form.subject }}
+        {% if form.subject.errors %}
+          <div class="error-message">
+            {{ form.subject.errors }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+          <div class="error-message">
+            {{ form.message.errors }}
+          </div>
+        {% endif %}
+        <div class="form-help">質問内容をできるだけ詳しくご記入ください。</div>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.problem_image.id_for_label }}">{{ form.problem_image.label }}</label>
+        {{ form.problem_image }}
+        {% if form.problem_image.errors %}
+          <div class="error-message">
+            {{ form.problem_image.errors }}
+          </div>
+        {% endif %}
+        <div class="form-help">問題の画像があれば、アップロードしてください。</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">送信する</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="{% url 'index' %}" style="color: #6b7280; text-decoration: none;">← トップページに戻る</a>
+    </div>
+
+    <div style="margin-top: 24px; padding: 16px; background: #f3f4f6; border-radius: 8px; font-size: 14px; color: #4b5563;">
+      <strong>📧 返信先メールアドレス：</strong> 0322hyt@gmail.com<br>
+      ※ 返信が届くよう、上記アドレスの受信許可設定をお願いします。
+    </div>
+  </div>
+</body>
+</html>
