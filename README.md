@@ -71,6 +71,13 @@
    ```
 
 8. **ブラウザでアクセス**
+   ```
+   http://127.0.0.1:8000/
+   ```
+
+## 📁 プロジェクト構造
+
+```
 MathHint-Collector/
 ├── math_app/                 # メイン Django アプリケーション
 │   ├── models.py            # データベースモデル（Grade, Tag, Problem, Question など）
@@ -109,14 +116,7 @@ MathHint-Collector/
 ├── .gitignore               # Git 除外設定
 ├── requirements.txt         # 依存パッケージ
 ├── manage.py                # Django 管理コマンド
-├── db.sqlite3               # SQLite データベース（開発環境）サーバー設定
-│   ├── asgi.py              # ASGI サーバー設定
-│   └── __pycache__/
-├── fixtures/                # サンプルデータ
-│   └── math_seed.json
-├── requirements.txt         # 依存パッケージ
-├── manage.py                # Django 管理コマンド
-├── pyvenv.cfg              # 仮想環境設定
+├── db.sqlite3               # SQLite データベース（開発環境）
 └── README.md                # このファイル
 ```
 
